@@ -1,0 +1,65 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		// {
+		// 	"path": "pages/login/login",
+		// 	"style": {
+		// 		"navigationBarTitleText": "登录"
+		// 	}
+		// }, 
+		{
+			"path": "pages/index/index"
+		},
+		{
+			"path": "pages/advices/advices"
+		},
+		{
+			"path": "pages/work/work"
+		},
+		{
+			"path": "pages/work/monitor"
+		},
+		{
+			"path": "pages/work/details"
+		},
+		{
+			"path": "pages/mine/mine"
+		},
+		{
+			"path": "pages/flush"
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"enablePullDownRefresh": true,
+		"backgroundColor": "#F8F8F8",
+		"app-plus": {
+			"titleNView": false
+		}
+	},
+	// tabBar 页面配置
+	"tabBar": {
+		"list": [{
+			"pagePath": "pages/index/index",
+			"text": "首页",
+			"iconPath": "static/img/home.png",
+			"selectedIconPath": "static/img/home_normal.png"
+		}, {
+			"pagePath": "pages/advices/advices",
+			"text": "消息",
+			"iconPath": "static/img/advices.png",
+			"selectedIconPath": "static/img/advices_normal.png"
+		}, {
+			"pagePath": "pages/work/work",
+			"text": "工作台",
+			"iconPath": "static/img/work.png",
+			"selectedIconPath": "static/img/work_normal.png"
+		}, {
+			"pagePath": "pages/mine/mine",
+			"text": "我的",
+			"iconPath": "static/img/mine.png",
+			"selectedIconPath": "static/img/mine_normal.png"
+		}]
+	}
+}
