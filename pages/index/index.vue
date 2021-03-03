@@ -1,11 +1,10 @@
 <template>
 	<view id="index">
+		<view class="index-title">鱼菜共生基地</view>
 		<view class="kpi-alarm">
-			<view class="title">
-				鱼菜共生基地
-			</view>
+			<!-- <view class="title">鱼菜共生基地</view> -->
 			<view class="kpi">
-				<view v-for="(item,index) in kpiData" :key="index" class="kpi-for" @click="kpiswitchTab(index)">
+				<view v-for="(item,index) in kpiData" :key="index" class="kpi-for" @click="kpiswitchTab(item.url)">
 					<image class="border" :src="'../../static/svg/'+(index+1)+'.svg'" mode=""></image>
 					<view class="name">{{item.name}}</view>
 				</view>
@@ -13,10 +12,10 @@
 			<view class="alarm">
 				<view v-for="(item,index) in alarmData" :key="index" class="alarm-for">
 					<view class="type-text">
-						<view class="type" :style="{'background':item.type==0?'#4BA6FF ':'#FF881E'}">{{item.type==0?'提示':'预警'}}</view>
-						<view class="text">{{item.title}}</view>
+						<view class="type" :style="{'background':item.ycgsAlarmInfo.alarmInfoLevel!=0?'#4BA6FF ':'#FF881E'}">{{item.ycgsAlarmInfo.alarmInfoLevel==0?'提示':'预警'}}</view>
+						<view class="text">{{item.ycgsAlarmInfo.alarmInfoName}}</view>
 					</view>
-					<view class="tiem">{{item.time}}</view>
+					<view class="tiem">{{item.alarmTime}}</view>
 				</view>
 			</view>
 		</view>
@@ -33,16 +32,16 @@
 			 @fullscreenchange='fullscreenchange'></video>
 		</view>
 		<view class="interval"></view>
-		<view class="monitor">
-			<view class="monitor-title">实时监测</view>
+		<view class="real">
+			<view class="real-title">实时监测</view>
 			<view class="select">
 				<picker @change="bindPickerChange" :value="index" :range="array">
 					<view class="uni-input">{{array[index]}}</view>
 				</picker>
-				<image class="monitor-image" src="../../static/svg/xia.svg" mode=""></image>
+				<image class="real-image" src="../../static/svg/xia.svg" mode=""></image>
 			</view>
-			<view class="monitor-data">
-				<view class="monitor-for" v-for="(item,index) in monitorData" :key="index">
+			<view class="real-data">
+				<view class="real-for" v-for="(item,index) in realData" :key="index" @click="monitorDetails(item)">
 					<view class="name-value">
 						<view class="name">{{item.name}}</view>
 						<view class="value">{{item.value}}</view>
@@ -78,30 +77,22 @@
 				index: 0,
 				kpiData: [{
 					name: "实时监测",
-					color: '#FFDCA5'
+					color: '#FFDCA5',
+					url: '../work/real/index'
 				}, {
 					name: "报警管理",
-					color: '#99EFD9'
+					color: '#99EFD9',
+					url: '../work/alarm/index'
 				}, {
 					name: "日常检测",
-					color: '#81D3F8'
+					color: '#81D3F8',
+					url: '../work/daily/index'
 				}, {
 					name: "订单统计",
-					color: '#99EFD9'
+					color: '#99EFD9',
+					url: ''
 				}],
-				alarmData: [{
-					type: 1,
-					title: '2号系统溶氧值低于3mg/L',
-					time: '14:24'
-				}, {
-					type: 1,
-					title: '1号系统水温高于35℃',
-					time: '12:56'
-				}, {
-					type: 0,
-					title: '2号系统电机关闭',
-					time: '10:12'
-				}],
+				alarmData: [],
 				videoData: [{
 					name: '种植区',
 					img: 'zhongzhiqu',
@@ -119,8 +110,9 @@
 					img: 'sysbei',
 					url: 'https://hls01open.ys7.com/openlive/e5a4a2762efe47918a1758382e2c0ff1.m3u8'
 				}],
-				monitorData: [],
+				realData: [],
 				systemData: [{
+					id: '',
 					name: "溶氧",
 					value: '0',
 					unit: 'mg/L',
@@ -128,6 +120,7 @@
 					type: true,
 					alarmType: true
 				}, {
+					id: '',
 					name: "水温",
 					value: '0',
 					unit: '℃',
@@ -135,6 +128,7 @@
 					type: true,
 					alarmType: true
 				}, {
+					id: '',
 					name: "PH",
 					value: '0',
 					unit: '',
@@ -142,6 +136,7 @@
 					type: true,
 					alarmType: true
 				}, {
+					id: '',
 					name: "电导率",
 					value: '0',
 					unit: 'S/m',
@@ -149,6 +144,7 @@
 					type: true,
 					alarmType: true
 				}, {
+					id: '',
 					name: "ORP",
 					value: '0',
 					unit: 'mg/L',
@@ -156,6 +152,7 @@
 					type: true,
 					alarmType: true
 				}, {
+					id: '',
 					name: "水位",
 					value: '0',
 					unit: 'm',
@@ -163,6 +160,7 @@
 					type: true,
 					alarmType: true
 				}, {
+					id: '',
 					name: "水压1",
 					value: '0',
 					unit: 'kPa',
@@ -170,6 +168,7 @@
 					type: true,
 					alarmType: true
 				}, {
+					id: '',
 					name: "水压2",
 					value: '0',
 					unit: 'kPa',
@@ -177,6 +176,7 @@
 					type: true,
 					alarmType: true
 				}, {
+					id: '',
 					name: "氧气压力",
 					value: '0',
 					unit: 'kPa',
@@ -184,6 +184,7 @@
 					type: true,
 					alarmType: true
 				}, {
+					id: '',
 					name: "电机",
 					value: '开',
 					unit: '--',
@@ -192,6 +193,7 @@
 					alarmType: true
 				}],
 				contextData: [{
+					id: '',
 					name: "温度",
 					value: '0',
 					unit: '℃',
@@ -199,6 +201,7 @@
 					type: true,
 					alarmType: true
 				}, {
+					id: '',
 					name: "湿度",
 					value: '0',
 					unit: 'rh',
@@ -206,6 +209,7 @@
 					type: true,
 					alarmType: true
 				}, {
+					id: '',
 					name: "CO2",
 					value: '0',
 					unit: '',
@@ -213,6 +217,7 @@
 					type: true,
 					alarmType: true
 				}, {
+					id: '',
 					name: "风速",
 					value: '0',
 					unit: 'm/s',
@@ -220,6 +225,7 @@
 					type: true,
 					alarmType: true
 				}, {
+					id: '',
 					name: "风力",
 					value: '0',
 					unit: '',
@@ -227,6 +233,7 @@
 					type: true,
 					alarmType: true
 				}, {
+					id: '',
 					name: "光照强度",
 					value: '0',
 					unit: '0',
@@ -237,48 +244,46 @@
 			}
 		},
 		onLoad() {
-			uni.request({
-				url: this.url + "/auth/login", //仅为示例，并非真实接口地址。
-				method: "POST",
-				data: {
-					userName: "admin",
-					password: "admin",
-				},
-				success: (data) => {
-					if (data.data.code == 200) {
-					
-						this.token = data.data.data.tokenType + data.data.data.accessToken
+			uni.getStorage({
+				key: 'token',
+				success: (e) => {
+					if (e.data) {
+						this.token = e.data
 						this.systemDataInquire(0);
 						this.alarmListData();
 					}
+				},
+				fail: (e) => {
+					uni.reLaunch({
+						url: '../login/login'
+					});
 				}
 			})
-			// uni.getStorage({
-			// 	key: 'token',
-			// 	success: (e) => {
-			// 		if (e.data) {
-			// 			console.log()
-			// 			this.token = e.data
-			// 			this.systemDataInquire(0);
-			// 			this.alarmListData();
-			// 		}
-			// 	},
-			// 	fail: (e) => {
-			// 		this.loginToken()
-			// 	}
-			// })
 		},
 		methods: {
 			// 告警列表
 			alarmListData() {
-				console.log(this.token)
 				uni.request({
 					url: this.url + '/index/alarm/3/1',
 					header: {
 						'authorization': this.token
 					},
 					success: (data) => {
-						console.log(data)
+						if (data.data.code == 200) {
+							(data.data.data.data).forEach(each => {
+								this.data.forEach(map => {
+									if (Object.values(map)[0].indexOf(each.alarmDeviceId) > -1) {
+										let motor = "";
+										if (each.ycgsAlarmInfo.alarmInfoName == "电机") {
+											motor = each.ycgsAlarmInfo.alarmInfoType
+										}
+										each.ycgsAlarmInfo.alarmInfoName = Object.keys(map)[0] + each.ycgsAlarmInfo.alarmInfoName + motor
+									}
+								})
+							})
+							this.alarmData = data.data.data.data;
+							// console.log(this.data)
+						}
 					}
 				})
 			},
@@ -295,35 +300,35 @@
 			},
 			// 系统实时数据查询
 			systemDataInquire(index) {
-				this.monitorData = this.systemData
+				this.realData = this.systemData
 				let url, fieladData
 				switch (index) {
 					case 0:
 						url = 'systemOne'
 						fieladData = [
-							['ycgsSupplyOxygen', 'pressure', '氧气压力', '']
+							['ycgsSupplyOxygen', 'pressure', '氧气压力', '', '0001832010230002']
 						]
 						break;
 					case 1:
 						url = 'systemTwo'
 						fieladData = [
-							['YcgsWaterQuality', 'dissolvedOxygen', '溶氧', ''],
-							['YcgsWaterQuality', 'waterTemperature', '水温', ''],
-							['YcgsWaterQuality', 'ph', 'PH', ''],
-							['YcgsWaterQuality', 'orp', 'ORP', ''],
-							['YcgsWaterQuality', 'conductivity', '电导率', ''],
-							['YcgsWaterSupply', 'pressure', '水压1', ''],
-							['YcgsSupplyOxygen', 'pressure', '氧气压力', ''],
-							['YcgsReturnTank', 'level', '水位', '']
+							['YcgsWaterQuality', 'dissolvedOxygen', '溶氧', '', '0001902010230001'],
+							['YcgsWaterQuality', 'waterTemperature', '水温', '', '0001902010230001'],
+							['YcgsWaterQuality', 'ph', 'PH', '', '0001902010230001'],
+							['YcgsWaterQuality', 'orp', 'ORP', '', '0001902010230001'],
+							['YcgsWaterQuality', 'conductivity', '电导率', '', '0001902010230001'],
+							['YcgsWaterSupply', 'pressure', '水压1', '', '0001832010230001'],
+							['YcgsSupplyOxygen', 'pressure', '氧气压力', '', '0001832010230002'],
+							['YcgsReturnTank', 'level', '水位', '', '0001842010230001']
 						]
 						break;
 					case 2:
 						url = 'systemThree'
 						fieladData = [
-							['YcgsWaterSupplyThreeLeft', 'pressure', '水压1', ''],
-							['YcgsWaterSupplyThreeRight', 'pressure', '水压2', ''],
-							['YcgsSupplyOxygenThree', 'pressure', '氧气压力', ''],
-							['YcgsReturnTankThree', 'level', '水位', '']
+							['YcgsWaterSupplyThreeLeft', 'pressure', '水压1', '', '0001832010230006'],
+							['YcgsWaterSupplyThreeRight', 'pressure', '水压2', '', '0001832010230005'],
+							['YcgsSupplyOxygenThree', 'pressure', '氧气压力', '', '0001832010230007'],
+							['YcgsReturnTankThree', 'level', '水位', '', '0001842010230002']
 						]
 						break;
 				}
@@ -342,21 +347,21 @@
 			// 环境实时数据查询
 			environmentDataInquire(index) {
 				let room = index == 3 ? 'outdoor' : 'indoor'
-				this.monitorData = this.contextData
+				this.realData = this.contextData
 				uni.request({
-					url: this.url + '/index/monitoring',
+					url: this.url + '/index/realing',
 					header: {
 						'authorization': this.token
 					},
 					success: (data) => {
 						if (data.data.code == 200) {
 							let fieladData = [
-								['YcgsMeteorological', room + 'Temperature', '温度', ''],
-								['YcgsMeteorological', room + 'Humidity', '湿度', ''],
-								['YcgsMeteorological', room + 'Co2', 'CO2', ''],
-								['YcgsMeteorological', room + 'WindPower', '风速', ''],
-								['YcgsMeteorological', room + 'WindSpeed', '风力', ''],
-								['YcgsEnvironmentalScience', room + 'Illumination', '光照强度', '']
+								['YcgsMeteorological', room + 'Temperature', '温度', '', '0002912011020001'],
+								['YcgsMeteorological', room + 'Humidity', '湿度', '', '0002912011020001'],
+								['YcgsMeteorological', room + 'Co2', 'CO2', '', '0002912011020001'],
+								['YcgsMeteorological', room + 'WindPower', '风速', '', '0002912011020001'],
+								['YcgsMeteorological', room + 'WindSpeed', '风力', '', '0002912011020001'],
+								['YcgsEnvironmentalScience', room + 'Illumination', '光照强度', '', '0001892010230001']
 							]
 							this.systeDataSettle(fieladData, data.data.data);
 						}
@@ -370,14 +375,15 @@
 				let link = []
 				fieladData.forEach(each => {
 					each[3] = data[each[0]][each[1]].toFixed(1)
-					link.push([each[2], each[3]])
+					link.push([each[2], each[3], each[4]])
 				})
-				this.monitorData.forEach(each => {
+				this.realData.forEach(each => {
 					if (each.name != "电机") each.value = "0"
 				})
 				link.forEach(each => {
-					let fill = this.monitorData.filter(fill => fill.name === each[0])[0];
-					fill.value = each[1]
+					let fill = this.realData.filter(fill => fill.name === each[0])[0];
+					fill.value = each[1];
+					fill.id = each[2];
 				})
 			},
 			// 监控视频Token获取
@@ -402,28 +408,7 @@
 					}
 				})
 			},
-			// 获取logintoken
-			loginToken() {
-				uni.request({
-					url: this.url + "/auth/login", //仅为示例，并非真实接口地址。
-					method: "POST",
-					data: {
-						userName: 'admin',
-						password: 'admin',
-					},
-					success: (data) => {
-						if (data.data.code == 200) {
-							uni.setStorage({
-								key: 'token',
-								data: data.data.data.tokenType + data.data.data.accessToken
-							})
-							uni.reLaunch({
-								url: '../index/index'
-							});
-						}
-					}
-				})
-			},
+
 			// 视频全屏播放
 			videoFullPlay(url) {
 				this.videoUrl = url;
@@ -451,16 +436,30 @@
 					});
 				}, 1000);
 			},
-			kpiswitchTab(num) {
-				// console.log(num)
-				switch (num) {
-					case 0:
-						uni.navigateTo({
-							url: '../work/monitor'
-						});
-						break;
+			// 首行四图标跳转
+			kpiswitchTab(url) {
+				if (url) {
+					uni.navigateTo({
+						url: url
+					});
 				}
-			}
+			},
+			// //实时监测详情数据
+			monitorDetails(item) {
+				if (item.id) {
+					uni.navigateTo({
+						url: '../work/real/details?token=' + this.token + '&data=' + JSON.stringify(item) + '&navigaTitle=' + this.array[
+								this.index] +
+							'&index=' + this.index + ''
+					});
+				} else {
+					uni.showLoading({
+						title: '暂无数据',
+						icon: 'none',
+						position: "top"
+					})
+				}
+			},
 		}
 	}
 </script>
@@ -468,6 +467,18 @@
 <style lang="less">
 	#index {
 
+		.index-title {
+			width: 100%;
+			position: fixed;
+			top: 0px;
+			color: #FFFFFF;
+			font-size: 20px;
+			font-weight: bold;
+			text-align: center;
+			padding: 50px 0px 30px 0px;
+			background: #2478FF;
+			z-index: 999;
+		}
 
 		.interval {
 			height: 10px;
@@ -475,8 +486,8 @@
 		}
 
 		.kpi-alarm {
-			padding-top: 50px;
-			background: linear-gradient(0deg, #2478FF 0%, #2693FF 100%);
+			padding-top: 106px;
+			background: #2478FF 20%;
 
 			.title {
 				color: #FFFFFF;
@@ -602,7 +613,7 @@
 			}
 		}
 
-		.monitor {
+		.real {
 			display: flex;
 			justify-content: space-between;
 			flex-wrap: wrap;
@@ -610,7 +621,7 @@
 			padding: 0px 12px;
 			margin: 17px 0px;
 
-			.monitor-title {
+			.real-title {
 				color: #111111;
 				font-size: 18px;
 				font-weight: bold;
@@ -620,21 +631,21 @@
 				line-height: 29px;
 				display: flex;
 
-				.monitor-image {
+				.real-image {
 					width: 30px;
 					height: 20px;
 					margin-top: 5px;
 				}
 			}
 
-			.monitor-data {
+			.real-data {
 				width: 100%;
 				display: flex;
 				flex-wrap: wrap;
 				justify-content: space-between;
 				margin-top: 5px;
 
-				.monitor-for {
+				.real-for {
 					width: 48%;
 					border: 1px solid #F3F9FF;
 					margin-top: 10px;
@@ -654,6 +665,7 @@
 						.value {
 							font-size: 16px;
 							font-weight: bold;
+							font-family: DINBLOD;
 						}
 					}
 

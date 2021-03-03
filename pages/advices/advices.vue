@@ -4,7 +4,7 @@
 		<view class="alram-data">
 			<view class="for-data" v-for="(item,index) in alarmData" :key="index">
 				<view class="img-center">
-					<view class="img"></view>
+					<image class="img" :src="'../../static/img/'+item.img+'.png'"></image>
 					<view class="title-center">
 						<view class="title">{{item.title}}</view>
 						<view class="center">{{item.center}}</view>
@@ -26,17 +26,7 @@
 			return {
 				//绑定的数据
 				token: '',
-				alarmData: [{
-					img: '',
-					title: '报警信息',
-					center: '2号系统溶氧值低于3mg/L',
-					time: '14:47'
-				}, {
-					img: '',
-					title: '系统通知',
-					center: '某设备开启/关闭',
-					time: '14:47'
-				}]
+				alarmData: []
 			};
 		},
 		onLoad() {
@@ -45,18 +35,58 @@
 				key: 'token',
 				success: (e) => {
 					if (e.data) {
-						console.log()
 						this.token = e.data
-
+						this.alarmListData()
 					}
 				},
 				fail: (e) => {
-					this.loginToken()
+					uni.reLaunch({
+						url: '../login/login'
+					});
 				}
 			})
 		},
 		methods: {
 			//自定义事件集合地
+			// 告警列表
+			alarmListData() {
+				uni.request({
+					url: this.url + '/index/alarm/3/1',
+					header: {
+						'authorization': this.token
+					},
+					success: (data) => {
+						if (data.data.code == 200) {
+							this.alarmData.length == 0;
+							(data.data.data.data).forEach(each => {
+								this.data.forEach(map => {
+									if (Object.values(map)[0].indexOf(each.alarmDeviceId) > -1) {
+										let motor = "";
+										if (each.ycgsAlarmInfo.alarmInfoName == "电机") {
+											motor = each.ycgsAlarmInfo.alarmInfoType
+										}
+										each.ycgsAlarmInfo['alarmCenter'] = Object.keys(map)[0] + each.ycgsAlarmInfo.alarmInfoName + motor
+									}
+								})
+								this.alarmData.push({
+									img: each.ycgsAlarmInfo.alarmInfoType.indexOf('开关') > -1 ? 'inform' : 'alarm-info',
+									title: each.ycgsAlarmInfo.alarmInfoType,
+									center: each.ycgsAlarmInfo.alarmCenter,
+									time: each.alarmTime
+								});
+							})
+						}
+					}
+				})
+			},
+			onPullDownRefresh() {
+				setTimeout(function() {
+					uni.stopPullDownRefresh();
+					uni.reLaunch({
+						url: '../advices/advices'
+					});
+				}, 1000);
+			},
 		},
 		beforeDestroy() {
 			//组件销毁之前调用，取消订阅
@@ -65,19 +95,19 @@
 </script>
 <style lang="less">
 	.advices {
+		position: relative;
+
 		.page-head {
-			font-size: 20px;
-			font-weight: bold;
-			color: #111111;
-			line-height: 20px;
-			text-align: center;
-			margin-top: 20px;
-			padding: 14px 0px;
-			border-bottom: 1px solid #E8ECF0;
+			position: fixed;
+			top: 0px;
+			z-index: 999;
+			background: #FFFFFF;
 		}
 
 		.alram-data {
-			padding: 0px 24px;
+			position: relative;
+			top: 100px;
+			padding: 0px 12px;
 
 			.for-data {
 				// height: 47px;
@@ -92,14 +122,24 @@
 				.img {
 					height: 47px;
 					width: 47px;
-					background: #F57464;
 					border-radius: 25px;
-					margin-right: 20px;
+					margin-right: 10px;
 				}
 
 				.title-center {
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					font-weight: 500;
+
 					.title {
-						margin-bottom: 10px;
+						color: #111111;
+						font-size: 17px;
+					}
+
+					.center {
+						color: #5F5F5F;
+						font-size: 14px;
 					}
 				}
 
@@ -108,6 +148,9 @@
 
 					.time {
 						margin-bottom: 10px;
+						font-size: 12px;
+						color: #5F5F5F;
+						width: 120px;
 					}
 
 					.icon {
@@ -119,6 +162,10 @@
 						right: 0px;
 					}
 				}
+			}
+
+			.for-data:first-child {
+				margin-top: 0px;
 			}
 		}
 	}

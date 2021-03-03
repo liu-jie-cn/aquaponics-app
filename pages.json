@@ -1,31 +1,44 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		// {
-		// 	"path": "pages/login/login",
-		// 	"style": {
-		// 		"navigationBarTitleText": "登录"
-		// 	}
-		// }, 
+		{
+			"path": "pages/login/login"
+		}, 
 		{
 			"path": "pages/index/index"
-		},
-		{
+		}, {
 			"path": "pages/advices/advices"
-		},
-		{
+		}, {
 			"path": "pages/work/work"
-		},
-		{
-			"path": "pages/work/monitor"
-		},
-		{
-			"path": "pages/work/details"
-		},
-		{
+		}, { //实时监测
+			"path": "pages/work/real/index"
+		}, {
+			"path": "pages/work/real/details"
+		}, { //报警管理
+			"path": "pages/work/alarm/index"
+		}, {
+			"path": "pages/work/alarm/untreated"
+		}, {
+			"path": "pages/work/alarm/dispose"
+		}, {
+			"path": "pages/work/alarm/tolerate"
+		}, { //日常检测
+			"path": "pages/work/daily/index"
+		}, {
+			"path": "pages/work/daily/append"
+		}, { //订单数据
+			"path": "pages/work/order/index"
+		}, {
+			"path": "pages/work/order/details"
+		}, { //喂食管理
+			"path": "pages/work/feed/index"
+		}, {
+			"path": "pages/work/feed/make"
+		}, { //统计图表
+			"path": "pages/work/statistics/monitoring"
+		}, {
+			"path": "pages/work/statistics/ordered"
+		}, {
 			"path": "pages/mine/mine"
-		},
-		{
-			"path": "pages/flush"
 		}
 	],
 	"globalStyle": {
