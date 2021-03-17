@@ -1,14 +1,30 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+
 		{
-			"path": "pages/login/login"
-		}, 
+			"path": "pages/index/index",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
 		{
-			"path": "pages/index/index"
+			"path": "pages/test"
 		}, {
-			"path": "pages/advices/advices"
+			"path": "pages/login/login",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/advices/advices",
+			"style": {
+				"enablePullDownRefresh": true
+			}
 		}, {
-			"path": "pages/work/work"
+			"path": "pages/work/work",
+			"style": {
+				"enablePullDownRefresh": true
+			}
 		}, { //实时监测
 			"path": "pages/work/real/index"
 		}, {
@@ -38,18 +54,29 @@
 		}, {
 			"path": "pages/work/statistics/ordered"
 		}, {
-			"path": "pages/mine/mine"
+			"path": "pages/mine/mine",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},{
+			"path":"pages/mine/materials"
+		},{
+			"path":"pages/mine/safety"
+		},{
+			"path":"pages/mine/regard"
+		},{
+			"path":"pages/mine/help"
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"enablePullDownRefresh": true,
 		"backgroundColor": "#F8F8F8",
 		"app-plus": {
 			"titleNView": false
 		}
+
 	},
 	// tabBar 页面配置
 	"tabBar": {

@@ -82,7 +82,7 @@
 			onPullDownRefresh() {
 				setTimeout(function() {
 					uni.stopPullDownRefresh();
-					uni.reLaunch({
+					uni.redirectTo({
 						url: '../advices/advices'
 					});
 				}, 1000);

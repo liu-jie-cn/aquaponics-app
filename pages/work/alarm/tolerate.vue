@@ -86,7 +86,7 @@
 			onPullDownRefresh() {
 				setTimeout(function() {
 					uni.stopPullDownRefresh();
-					uni.reLaunch({
+					uni.redirectTo({
 						url: '../alarm/tolerate'
 					});
 				}, 1000);
@@ -103,7 +103,7 @@
 		background: #F5F7FA;
 		.tolerate-data{
 			position: relative;
-			top: 82px;
+			top: 87px;
 		}
 		.data {
 			height: 84px;

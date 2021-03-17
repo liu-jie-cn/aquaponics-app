@@ -8,7 +8,7 @@
 			</view>
 		</view>
 		<view class="classify">
-			<view class="classify-for" v-for="(item,index) in classifyData" :key="index" @click="minelineClick(index)">
+			<view class="classify-for" v-for="(item,index) in classifyData" :key="index" @click="minelineClick(index,item.img)">
 				<view class="image-name">
 					<image class="image" :src="'../../static/img/'+item.img+'.png'" mode=""></image>
 					<view class="name">{{item.name}}</view>
@@ -17,15 +17,25 @@
 				<view v-if="index%2" class="even"></view>
 			</view>
 		</view>
+		<l-modal ref="customModal" @onClickConfirm="confirm">
+			<template>
+				<view class="model-title">您确认退出当前账号?</view>
+			</template>
+		</l-modal>
 	</view>
 </template>
 <script>
+	import lModal from '@/components/l-modal/l-modal.vue'
 	export default {
 		name: '',
 		props: {},
+		components: {
+			lModal
+		},
 		data() {
 			return {
 				//绑定的数据
+				userData: {},
 				classifyData: [{
 						name: '个人资料',
 						img: 'materials'
@@ -51,30 +61,48 @@
 		},
 		onLoad() {
 			//页面初始化触发事件
+			// uni.getStorage({
+			// 	key: 'userInfo',
+			// 	success: (e) => {
+			// 		if (e.data) {
+			// 			this.userData = e.data;
+			// 		}
+			// 	},
+			// 	fail: (e) => {
+			// 		uni.reLaunch({
+			// 			url: '../login/login'
+			// 		});
+			// 	}
+			// })
 		},
 		methods: {
 			//自定义事件集合地
 			// 
-			minelineClick(index) {
+			minelineClick(index, url) {
 				switch (index) {
 					case 0: //个人资料
-						break;
 					case 1: //账号安全
-						break;
 					case 2: //关于我们
-						break;
 					case 3: //帮助中心
-						break;
-					case 4: //退出当前账号
-						uni.removeStorage('token');
-						uni.removeStorageSync('token')
-						uni.reLaunch({
-							url: '../login/login'
+						uni.navigateTo({
+							url: './' + url
 						});
 						break;
+					case 4: //退出当前账号
+						this.$refs['customModal'].showModal();
+						break;
 				}
-			}
+			},
+			// 对话框确认
+			confirm() {
+				uni.removeStorage('token');
+				uni.removeStorageSync('token');
+				uni.reLaunch({
+					url: '../login/login'
+				});
+			},
 		},
+
 		beforeDestroy() {
 			//组件销毁之前调用，取消订阅
 		}
@@ -84,6 +112,10 @@
 	.mine {
 		min-height: 100%;
 		background: #F5F7FA;
+
+		.model-title {
+			text-align: center;
+		}
 
 		.oneself {
 			height: 206px;

@@ -92,7 +92,7 @@
 			onPullDownRefresh() {
 				setTimeout(function() {
 					uni.stopPullDownRefresh();
-					uni.reLaunch({
+					uni.redirectTo({
 						url: '../feed/make'
 					});
 				}, 1000);

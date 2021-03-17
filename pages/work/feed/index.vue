@@ -47,6 +47,7 @@
 		data() {
 			return {
 				//绑定的数据
+				token: '',
 				selectData: [{
 					name: '喂食地点',
 					data: ['喂食地点1', '喂食地点2', '喂食地点3']
@@ -74,6 +75,20 @@
 		},
 		onLoad() {
 			//页面初始化触发事件
+			uni.getStorage({
+				key: 'token',
+				success: (e) => {
+					if (e.data) {
+						this.token = e.data
+						this.feedPlaceAll()
+					}
+				},
+				fail: (e) => {
+					uni.reLaunch({
+						url: '../login/login'
+					});
+				}
+			})
 		},
 		methods: {
 			//自定义事件集合地
@@ -82,6 +97,7 @@
 				let value = e.target.value;
 				this.selectData[index].name = this.selectData[index].data[value];
 			},
+			// 添加喂食
 			addFeedData() {
 				uni.navigateTo({
 					url: './make'
@@ -95,11 +111,23 @@
 			onPullDownRefresh() {
 				setTimeout(function() {
 					uni.stopPullDownRefresh();
-					uni.reLaunch({
+					uni.redirectTo({
 						url: '../feed/index'
 					});
 				}, 1000);
 			},
+			//获取喂食系统以及其下地点列表
+			feedPlaceAll() {
+				uni.request({
+					url: this.url + '/feed/place/all',
+					header: {
+						'authorization': this.token
+					},
+					success: (data) => {
+						console.log(data);
+					}
+				})
+			}
 		},
 		beforeDestroy() {
 			//组件销毁之前调用，取消订阅
@@ -120,7 +148,7 @@
 			padding: 15px 27px;
 			background: #FFFFFF;
 			position: fixed;
-			top: 70px;
+			top: 87px;
 			z-index: 999;
 
 			.select {
@@ -138,10 +166,12 @@
 				}
 			}
 		}
-		.feed-data{
+
+		.feed-data {
 			position: relative;
-			top: 130px;
+			top: 147px;
 		}
+
 		.data-for {
 			padding: 0px 12px;
 

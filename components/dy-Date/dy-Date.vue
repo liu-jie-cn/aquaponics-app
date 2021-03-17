@@ -293,7 +293,7 @@
 					timeValue = `${timeValue}-${date}`
 				}
 				this.showTime = timeValue
-				this.$emit('getData', timeValue)
+				this.$emit('change', timeValue)
 			},
 			// 当时发生改变时 加载对应的分钟数组
 			columnchange(e) {

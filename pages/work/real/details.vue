@@ -6,11 +6,11 @@
 		</view>
 		<view class="details-data">
 			<view class="details-alarm">
-				<view class="btn-text">
+				<!-- <view class="btn-text">
 					<text class="btn">报警</text>
 					<text class="text">溶氧高于报警值，请立即处理！</text>
 				</view>
-				<view class="action">去处理></view>
+				<view class="action">去处理></view> -->
 			</view>
 			<view class="sys-data">
 				<view class="name-value">
@@ -161,6 +161,7 @@
 			recordData(params) {
 				const field = this.basicData.field;
 				let room = ''
+				
 				switch (+params.index) {
 					case 3:
 						room = 'outdoor'
@@ -170,7 +171,7 @@
 						break;
 				}
 				uni.request({
-					url: this.url + '/ /' + this.basicData.id,
+					url: this.url + '/record/day/' + this.basicData.id,
 					header: {
 						'authorization': params.token
 					},
@@ -184,11 +185,12 @@
 								} else {
 									xAxisData.push(each.testingTime.substr(11, 5))
 								}
-								seriesData.push(each[room + field])
+							
+								seriesData.push(each[room + field]==0?"":each[room + field])
 							})
 							this.option.xAxis.data = xAxisData.reverse();
-							this.option.yAxis.max = Math.max(...seriesData);
-							this.option.yAxis.min = Math.min(...seriesData);
+							this.option.yAxis.max = (Math.max(...seriesData) + 0.5).toFixed(0);
+							this.option.yAxis.min = (Math.min(...seriesData) - 0.5).toFixed(0);
 							this.option.series[0].name = this.basicData.name;
 							this.option.series[0].data = seriesData.reverse();
 						}
@@ -226,7 +228,7 @@
 			onPullDownRefresh() {
 				setTimeout(function() {
 					uni.stopPullDownRefresh();
-					uni.reLaunch({
+					uni.redirectTo({
 						url: '../index/index'
 					});
 				}, 1000);
@@ -245,8 +247,9 @@
 			height: 44px;
 			position: fixed;
 			top: 0px;
-			padding: 40px 12px 5px 12px;
+			padding: 50px 12px 5px 12px;
 			background: #FFFFFF;
+			z-index: 999;
 
 
 			.icon-jiantou-left {
@@ -265,10 +268,12 @@
 				text-align: center;
 			}
 		}
-		.details-data{
+
+		.details-data {
 			position: relative;
-			top: 89px;
+			top: 99px;
 		}
+
 		.details-alarm {
 			height: 28px;
 			line-height: 28px;

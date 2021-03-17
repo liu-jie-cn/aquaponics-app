@@ -62,6 +62,7 @@
 				</view>
 			</view>
 		</view>
+		<quick-message ref="message"></quick-message>
 	</view>
 </template>
 
@@ -116,7 +117,7 @@
 					name: "溶氧",
 					value: '0',
 					unit: 'mg/L',
-					field: 'dissolved_oxygen',
+					field: 'dissolvedOxygen',
 					type: true,
 					alarmType: true
 				}, {
@@ -124,7 +125,7 @@
 					name: "水温",
 					value: '0',
 					unit: '℃',
-					field: 'water_temperature',
+					field: 'waterTemperature',
 					type: true,
 					alarmType: true
 				}, {
@@ -282,7 +283,6 @@
 								})
 							})
 							this.alarmData = data.data.data.data;
-							// console.log(this.data)
 						}
 					}
 				})
@@ -349,7 +349,7 @@
 				let room = index == 3 ? 'outdoor' : 'indoor'
 				this.realData = this.contextData
 				uni.request({
-					url: this.url + '/index/realing',
+					url: this.url + '/index/monitoring',
 					header: {
 						'authorization': this.token
 					},
@@ -431,7 +431,7 @@
 			onPullDownRefresh() {
 				setTimeout(function() {
 					uni.stopPullDownRefresh();
-					uni.reLaunch({
+					uni.redirectTo({
 						url: '../index/index'
 					});
 				}, 1000);
@@ -444,8 +444,9 @@
 					});
 				}
 			},
-			// //实时监测详情数据
+			// 实时监测详情数据
 			monitorDetails(item) {
+				console.log(this.index);
 				if (item.id) {
 					uni.navigateTo({
 						url: '../work/real/details?token=' + this.token + '&data=' + JSON.stringify(item) + '&navigaTitle=' + this.array[
@@ -453,10 +454,15 @@
 							'&index=' + this.index + ''
 					});
 				} else {
-					uni.showLoading({
-						title: '暂无数据',
-						icon: 'none',
-						position: "top"
+					this.$refs.message.show({
+						icon: "warn",
+						iconSize: 18,
+						iconColor: '#F6635F',
+						msg: '暂无数据',
+						customStyle: { //自定义样式
+							color: '#FFFFFF', //字体图标色
+							backgroundColor: 'rgba(0,0,0,.5)' //背景色
+						},
 					})
 				}
 			},
@@ -475,7 +481,7 @@
 			font-size: 20px;
 			font-weight: bold;
 			text-align: center;
-			padding: 50px 0px 30px 0px;
+			padding: 50px 0px 14px 0px;
 			background: #2478FF;
 			z-index: 999;
 		}
@@ -535,6 +541,7 @@
 				display: flex;
 				justify-content: space-between;
 				text-align: left;
+				
 
 				.type-text {
 					display: flex;

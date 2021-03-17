@@ -2,6 +2,7 @@
 	<view class="monitor">
 		<view class="monitor-tabBar">
 			<view class="iconfont icon-jiantou-left" @click="navigateBack"></view>
+			<view class="iconfont icon-tongji" @click="statisticsRoutingHop()"></view>
 			<view class="tabBar-title">实时监测</view>
 		</view>
 		<view class="monitor-naviga">
@@ -377,6 +378,12 @@
 					this.transShow = true;
 				}, 600);
 			},
+			// 统计跳转
+			statisticsRoutingHop() {
+				uni.navigateTo({
+					url: '../statistics/monitoring'
+				});
+			},
 			// 电机数据请求
 			electricalSignal(index) {
 				const signal = ['0001662010230003', '0001662010230002', '0001662010230004'];
@@ -409,7 +416,7 @@
 			onPullDownRefresh() {
 				setTimeout(function() {
 					uni.stopPullDownRefresh();
-					uni.reLaunch({
+					uni.redirectTo({
 						url: '../real/index'
 					});
 				}, 1000);
@@ -433,7 +440,7 @@
 
 		.monitor-naviga {
 			position: fixed;
-			top: 70px;
+			top: 87px;
 			z-index: 999;
 			width: calc(100% - 24px);
 			height: 44px;
@@ -468,7 +475,7 @@
 		.monitor-data {
 			height: 100%;
 			overflow: auto;
-			padding: 120px 12px 12px 12px;
+			padding: 140px 12px 12px 12px;
 
 			.monitor-for {
 				margin: auto;

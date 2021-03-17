@@ -150,7 +150,7 @@
 		onPullDownRefresh() {
 			setTimeout(function() {
 				uni.stopPullDownRefresh();
-				uni.reLaunch({
+				uni.redirectTo({
 					url: '../alarm/index'
 				});
 			}, 1000);
@@ -168,7 +168,7 @@
 		.alarm-select {
 			width: calc(100% - 56px);
 			position: fixed;
-			top: 70px;
+			top: 87px;
 			display: flex;
 			justify-content: space-between;
 			padding: 15px 27px;
@@ -200,7 +200,7 @@
 
 		.alarm-data {
 			position: relative;
-			top: 130px;
+			top: 147px;
 
 			.data {
 				padding: 0px 12px;

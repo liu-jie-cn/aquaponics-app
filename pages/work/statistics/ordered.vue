@@ -287,7 +287,7 @@
 			onPullDownRefresh() {
 				setTimeout(function() {
 					uni.stopPullDownRefresh();
-					uni.reLaunch({
+					uni.redirectTo({
 						url: '../statistics/ordered'
 					});
 				}, 1000);
@@ -305,7 +305,7 @@
 
 		.ordered-data {
 			position: relative;
-			top: 82px;
+			top: 100px;
 			padding: 0px 12px;
 
 			.kpi-data {

@@ -92,7 +92,7 @@
 			onPullDownRefresh() {
 				setTimeout(function() {
 					uni.stopPullDownRefresh();
-					uni.reLaunch({
+					uni.redirectTo({
 						url: './oreal/details'
 					});
 				}, 1000);
@@ -110,7 +110,7 @@
 
 		.details-data {
 			position: relative;
-			top: 78px;
+			top: 100px;
 
 			.details-for {
 				background: #FFFFFF;

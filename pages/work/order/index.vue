@@ -2,7 +2,7 @@
 	<view class="order">
 		<view class="monitor-tabBar">
 			<view class="iconfont icon-jiantou-left" @click="navigateBack"></view>
-			<view class="iconfont icon-tongji"></view>
+			<view class="iconfont icon-tongji" @click="statisticsRoutingHop()"></view>
 			<view class="tabBar-title">订单数据</view>
 		</view>
 		<view class="order-data">
@@ -76,6 +76,12 @@
 			navigateBack() {
 				uni.navigateBack()
 			},
+			//统计跳转
+			statisticsRoutingHop(){
+				uni.navigateTo({
+					url: '../statistics/ordered'
+				});
+			},
 			//订单详情页面跳转
 			orderParticulars(item, index) {
 				uni.navigateTo({
@@ -86,7 +92,7 @@
 			onPullDownRefresh() {
 				setTimeout(function() {
 					uni.stopPullDownRefresh();
-					uni.reLaunch({
+					uni.redirectTo({
 						url: './oreal/index'
 					});
 				}, 1000);
@@ -103,7 +109,7 @@
 		background: #F5F7FA;
 		.order-data{
 			position: relative;
-			top: 70px;
+			top: 90px;
 		}
 		.order-for {
 			.for {

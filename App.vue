@@ -28,6 +28,24 @@
 		src: url("./static/font/din-bold.otf")
 	}
 
+	.login .modal-title {
+		position: relative;
+		top: 20px;
+		font-size: 20px !important;
+		font-weight: bold;
+
+	}
+
+	.login .btn {
+		display: none;
+	}
+
+	.safety .uni-icon-success {
+		color: #14E39E;
+		line-height: 42px;
+		margin-right: 10px;
+	}
+
 	page {
 		height: 100%;
 	}
@@ -56,10 +74,10 @@
 	.monitor-tabBar {
 		width: calc(100% - 24px);
 		position: relative;
-		padding: 33px 12px 13px 12px;
+		padding: 50px 12px 13px 12px;
 		background: #FFFFFF;
 		position: fixed;
-		top:0px;
+		top: 0px;
 		background: #FFFFFF;
 		z-index: 999;
 
